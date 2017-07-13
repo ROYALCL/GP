@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlxy.LivingCircle.Mapper.UserMapper">
+
+    <!--<insert id="add" parameterType="User" useGeneratedKeys="true" keyProperty="Id">-->
+    <!--INSERT INTO gp_user-->
+    <!--(password,name,nick_name,sex,duty,email,photo_url,used,create_time)-->
+    <!--VALUE (#{PassWord},#{Name},#{NickName},#{Sex},#{Duty},#{Email},#{PhotoUrl},#{Used},#{CreateTime})-->
+    <!--</insert>-->
+</mapper>

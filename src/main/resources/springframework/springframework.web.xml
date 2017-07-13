@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <mvc:annotation-driven/>
+    <!-- 2.静态资源默认servlet配置
+        (1)加入对静态资源的处理：js,gif,png
+        (2)允许使用"/"做整体映射
+     -->
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/images/**" location="/img/"/>
+
+    <mvc:default-servlet-handler/>
+
+    <!-- 3.配置jsp 显示ViewResolver -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 上传文件大小上限，单位为字节（10MB） -->
+        <property name="maxUploadSize"><value>10485760</value></property>
+        <!-- 请求的编码格式，必须和jSP的pageEncoding属性一致，以便正确读取表单的内容，默认为ISO-8859-1 -->
+        <property name="defaultEncoding">
+            <value>UTF-8</value>
+        </property>
+        <property name="uploadTempDir" value="upload"></property>
+    </bean>
+
+    <!-- 4.扫描web相关的bean配置 -->
+    <context:component-scan base-package="org.jlxy.cmm.controller">
+        <!-- 制定扫包规则 ,只扫描使用@Controller注解的JAVA类 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--用户是否登录检查-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/js/**"/>
+            <mvc:exclude-mapping path="/img/**"/>
+            <mvc:exclude-mapping path="/commons/**"/>
+            <mvc:exclude-mapping path="/css/**"/>
+            <!--需要的检查-->
+            <bean id="MainInterceptor" class="org.jlxy.cmm.interceptor.MainInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>
